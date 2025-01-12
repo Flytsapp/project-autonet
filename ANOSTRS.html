@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../autonetlogo.ico">
+    <link rel="stylesheet" href="hljs/styles/github-dark.min.css">
+    <script src="hljs/highlight.min.js"></script>
+    <script src="hljs/languages/javascript.min.js"></script>
+    <script src="hljs/languages/plaintext.min.js"></script>
+    <script src="hljs/languages/xml.min.js"></script>
+    <script src="hljs/languages/php.min.js"></script>
+    <script src="hljs/languages/python.min.js"></script>
+    <script src="hljs/languages/css.min.js"></script>
+    <script src="hljs/languages/apache.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>ANOSTRS - Autonet</title>
+</head>
+<body>
+<pre id="page">
+
+.
+welcome
+Autonet
+.
+ha
+Autonet On-Server Traffic Regulation System (ANOSTRS)
+.
+txt
+Autonet provides basic idea of on-server Traffic Regulation System. It deals with on-server traffic lights and speed-limits of different locations. This data is stored in Autonet Database and is used by Autonet Taxi and Autonet youdrive while driving.
+.
+hb
+ANOSTRS in Database
+.
+img
+images/anostrs-db.png
+.
+txt
+The table shown above is ****`location`??? table in Autonet Database. The two coloums highlited are ****`trafficsignal`??? and ****`speedlimit`???. Basically, the data of traffic regulation is in location details. Every location has an traffic signal and speed-limit.
+.
+hc
+trafficsignal
+.
+txt
+It is a binary data. It is 0 for green signal and is 1 for red signal at the location.
+.
+hc
+speedlimit
+.
+txt
+It is a integer value from 0 to 100. It is the maximum speed any automobile can move through the location.
+.
+hb
+Related AND-API URLs
+.
+hc
+getlocationinfo
+.
+codeurl
+"http://{ip}/autonet/api/getlocationinfo.php?loc={location}"
+.
+txt
+The request takes location of which we want to get details as a URL parameter ****`loc`???. In return it gives the following pattern.
+.
+codetxt
+`name`~`trafficsignal`~`speedlimit`~`leadsto`
+.
+txt
+Here all ****`name`???,****`trafficsignal`???,****`speedlimit`??? and ****`leadsto`??? are Autonet Database coloums of ****`locations`??? table and the returned text will contain data in the above stated coloums of the row with the `loc` stated in request.
+.
+txt
+Lets look at The ANOSTRS Data in Autonet Database again.
+.
+img
+images/anostrs-db.png
+.
+txt
+Lets take an example request
+.
+codeurl
+"http://{ip}/autonet/api/getlocationinfo.php?loc=01"
+.
+txt
+Here, the response will be
+.
+codetxt
+Hospital~0~100~02 r14
+.
+txt
+Name of location - Hospital
+.
+txt
+Traffic signal there - 0 (Green)
+.
+txt
+Speed Limit there - 100%
+.
+txt
+It leads to locations - 02 and 14 after right turn
+.
+txt
+In this way, we get the information about trafficsignal and speed limit of particular location.
+.
+hc
+setsignal
+.
+codeurl
+"http://{ip}/autonet/api/setsignal.php?loc={location}&signal={desired_signal}"
+.
+txt
+The request takes location of which we want to set traffic signal as a URL parameter ****`loc`??? and the signal as a URL parameter ****`signal`??? which is a binary value, ****0??? for Green and ****1??? for Red. The response in return will be ***200??? in case of success and will be ***0??? in case of failure.
+.
+hb
+Autuonet Signal Editor
+.
+txt
+This is a application created in Project Autonet and is used to inspect and set traffic signal of particular location red on green.
+.
+img
+images/an-signaleditor.png
+.
+img
+images/an-signaleditor2.png
+.
+txt
+The two lights shown are really buttons and are used to set the traffic light and inspect traffic light at the same time.
+.
+hb
+ANOSTRS in Autonet Taxi
+</pre>
+</body>
+<script src="main.js"></script>
+</html>
