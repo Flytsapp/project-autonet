@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../autonetlogo.ico">
+    <link rel="stylesheet" href="hljs/styles/github-dark.min.css">
+    <script src="hljs/highlight.min.js"></script>
+    <script src="hljs/languages/javascript.min.js"></script>
+    <script src="hljs/languages/plaintext.min.js"></script>
+    <script src="hljs/languages/xml.min.js"></script>
+    <script src="hljs/languages/php.min.js"></script>
+    <script src="hljs/languages/python.min.js"></script>
+    <script src="hljs/languages/css.min.js"></script>
+    <script src="hljs/languages/apache.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Autonet</title>
+</head>
+<body>
+<pre id="page">
+
+.
+welcome
+Autonet
+.
+ha
+Autonet Emergency Messaging System (ANEMS)
+.
+txt
+Autonet project represents how connecting every automabile to a server makes safe drive possible. The projects includes an ****Emergency Messaging System (ANEMS)??? That sends SOS message to the contacts provided If any accident happens.
+.
+hb
+ANEMS in Database
+.
+imginv
+images/anems-db.png
+.
+txt
+The table shown above is ****`sosmessages`??? table in Autonet Database. The five coloums are ****`msgid`???, ****`car`???, ****`carname`???, ****`toid`??? and ****`loc`???. 
+.
+hc
+msgid
+.
+txt
+Every message has an unique ID that is ***Auto Incremented???. An Unique ID is required while deleting messages from Database.
+.
+hc
+car
+.
+txt
+This is the ID of the car which sent the message.
+.
+hc
+carname
+.
+txt
+This is the name of the car which sent the message.
+.
+hc
+toid
+.
+txt
+This is the ****SOS Receiver ID??? to which the message has to be sent.
+.
+hc
+loc
+.
+txt
+This is the location from where the message has been sent.
+.
+hb
+Accident Detection
+.
+txt
+To detect accident ESP of the YouDrive Car is connected to a ****SW 420??? sensor. This sensor does not exactly detects accidents but it is a vibration sensor which is used in the project for representation purpose.
+.
+txt
+The sensor is properly connected to ESP in the car and its ****D0 is connected to pin 34 of ESP.??? ANEMS program on ESP starts a loop that detects an high signal at pin 34. If it gets that, that means an accident has taken place. It makes the following request.
+.
+codeurl
+"http://{ip}/autonet/api/makesosmsg.php?carid={carid}&carname={carname}&toid={toid}&loc={location}"
+.
+txt
+This request will send an SOS message to the sosreceiver of the desired user id. Basically it will add a row to the ***`sosmessages`??? table inserting information about colums stated above ***`msgid`???, ***`car`???, ***`carname`???, ***`toid`??? and ***`loc`???. To make the request ESP needs 4 informations
+.
+hc
+carid
+.
+txt
+The ID of the car which is set for every youdrive car.
+.
+hc
+carname
+.
+txt
+The name of the car. It is fetched by the following request from the server
+.
+codeurl
+"http://{ip}/autonet/api/getydinfo.php?ydid={carid}"
+.
+txt
+return will be like
+.
+codetxt
+`name`~`servicingdate`
+.
+hc
+toid
+.
+txt
+the request is sent for each SOS contact set on database taking it as toid. To see how SOS contacts are set, refer to <<<./.youdrive.html>>>>YouDrive>>>.
+.
+hc
+loc
+.
+txt
+The location of the car.
+.
+hb
+SOS Receiver
+.
+txt
+In the project, an SOS Receiver is built. In real life implementation of project, people would receive SOS messages through SMS, Mails or even calls can be used for the purpose. But for project purpose, instead of using these, an SOS receiver is built. This SOS receiver fetches any SOS Message on the receiver id and shows it.
+.
+autoplay
+images/sos-app.mp4
+.
+hc
+Fetching messages
+.
+txt
+SOS Receiver fetches message sent to the receiver ID that is logged into the app by the the request
+.
+codeurl
+"http://{ip}/autonet/api/getsosmsg.php?toid={receiver_id}"
+.
+txt
+This will return,
+.
+codetxt
+`msg1_id`!`car1_id`!`car1_name`!`toid`!`loc1`
+.
+txt
+Each message saperated by ****~???. For example,
+.
+codetxt
+~10000051!10000001!Mercedes!9999988888!09~10000052!10000000!Raksha!9999988888!09
+.
+txt
+Or will return nothing if there is no SOS message.
+.
+hc
+Deleting SOS Messages
+.
+txt
+In SOS receiver, message can be removed from the database, by clicking the message. This ensures that user has seen the message. The deletion of message is done by the request
+.
+codeurl
+"http://{ip}/autonet/api/seensosmsg.php?msgid={message_id}"
+.
+txt
+the request will return ***200??? on success and ***0??? on failure.
+</pre>
+</body>
+<script src="main.js"></script>
+</html>
